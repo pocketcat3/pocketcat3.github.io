@@ -1,0 +1,110 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap');
+
+
+
+.menu{
+    margin: 0;
+    flex: 0 0 auto;
+    padding: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+    width: 18em;
+    margin-left: 25px;
+}
+
+.content {
+    flex: 1 0 auto;
+  }
+
+html,
+body {
+    height: 100%;
+}
+
+body{
+    position:fixed;
+    background-image: url();
+    display: flex;
+    flex-direction: column;
+}
+
+#mbucks{
+    font-family: 'Rubik Mono One', sans-serif;
+    font-size: 54px;
+    color: #48E000;
+    margin-left: 30px;
+    margin-top: -15px;
+}
+
+#username{
+    font-family: 'Rubik Mono One', sans-serif;
+    font-size: 20px;
+    margin-top: -7px;
+    margin-left: -5px;
+    color: #FFC700;
+}
+
+#role{
+    font-family: 'Rubik Mono One', sans-serif;
+    font-size: 12px;
+    margin-top: -12px;
+    margin-left: -5px;
+    color: #48E000;
+}
+
+#myTasksText{
+    font-size: 20px;
+    margin-top: 200px;
+    font-family: 'Rubik Mono One', sans-serif;
+    color: #FFC700;
+}
+
+
+#firstT, #secondT, #thirdT{
+    font-size: 17px;
+    font-family: 'Inter', sans-serif;
+}
+#firstT{
+    margin-top: 0px;
+}
+#secondT{
+    margin-top: 40px;
+}
+#thirdT{
+    margin-top: 40px;
+}
+
+
+
+
+#firstTbutton{
+    width: 100%;
+    background-color: #ffe072;
+    border-radius: 15px;
+    border-color: #FFC700;
+}
+#secondTbutton{
+    width: 100%;
+    background-color: #ffe072;
+    border-radius: 15px;
+    border-color: #FFC700;
+}
+#thirdTbutton{
+    width: 100%;
+    background-color: #ffe072;
+    border-radius: 15px;
+    border-color: #FFC700;
+}
+
+.mytasks{
+    background-color: #fff2c4;
+    border-radius: 15px;
+    width: 100%;
+}
+
+.mytasksdiv{
+    text-align: center;
+    
+}

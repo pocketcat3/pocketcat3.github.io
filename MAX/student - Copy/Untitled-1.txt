@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/style.css">
+    <title>MAX</title>
+</head>
+<body>
+    <h1 id="username">завантажуємось...</h1>
+    <h1 id="role">учень</h1>
+
+    <h1>Додати квест</h1>
+    <h2 id="common">завантажуємось...</h2><button id="commonB">узяти</button>
+    <h2 id="uncommon">завантажуємось...</h2><button id="uncommonB">узяти</button>
+    <h2 id="rare">завантажуємось...</h2><button id="rareB">узяти</button>
+    <h2 id="epic">завантажуємось...</h2><button id="epicB">узяти</button>
+    <h2 id="legendary">завантажуємось...</h2>
+
+    <div class="menu">
+        <a href="index.html"><img src="files/homeIcon.png" alt=""></a>
+        <a href="myTasks.html"><img src="files/tasksIcon.png" alt=""></a>
+        <a href="#"><img src="files/addTaskIcon.png" alt=""></a>
+        <a href="myWallet.html"><img src="files/walletIcon.png" alt=""></a>
+        <a href="settings.html"><img src="files/settingsIcon.png" alt=""></a>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-analytics.js";
+        import { getDatabase, ref, get, set, child, update, remove } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAdRjm2WAGMTP4dfJlrUvHsoW2Za2Ctbfs",
+            authDomain: "maxgl0bal.firebaseapp.com",
+            databaseURL: "https://maxgl0bal-default-rtdb.firebaseio.com",
+            projectId: "maxgl0bal",
+            storageBucket: "maxgl0bal.appspot.com",
+            messagingSenderId: "402614242195",
+            appId: "1:402614242195:web:bb25e8fd7046ce9018b666",
+            measurementId: "G-HJV50WJNDL"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getDatabase();
+
+        let username = checkCookie();
+        let firstAtask = "none";
+        let secondAtask = "none";
+        let thirdAtask = "none";
+
+        const getCtaskB = document.getElementById("commonB");
+        const getUtaskB = document.getElementById("uncommonB");
+        const getRtaskB = document.getElementById("rareB");
+        const getEtaskB = document.getElementById("epicB");
+
+        getData();
+        let timerId = setInterval(() => getData(), 1000);
+
+        function getData() {
+            document.getElementById("username").innerHTML = username;
+            const dbref = ref(db);
+
+            get(child(dbref, "MAXglobal/" + username)).then((snapshot) => {
+                if (snapshot.exists()) {
+                    document.getElementById("role").innerHTML = snapshot.val().role;
+                } else {
+                    alert("Нажаль ми не знайшли користувача з таким ім'ям (::>_<::)");
+                    deleteCookie();
+                }
+            });
+
+            get(child(dbref, "MAXglobal/" + username + "/tasks")).then((snapshot) => {
+                if (snapshot.exists()) {
+                    firstAtask = snapshot.val().first || "none";
+                    secondAtask = snapshot.val().second || "none";
+                    thirdAtask = snapshot.val().third || "none";
+                }
+            });
+
+            get(child(dbref, "MAXglobal/tasks/common")).then((snapshot) => {
+                if (snapshot.exists()) {
+                    document.getElementById("common").innerHTML = snapshot.val()["c" + getRandomInt(15)];
+                }
+            });
+
+            get(child(dbref, "MAXglobal/tasks/uncommon")).then((snapshot) => {
+                if (snapshot.exists()) {
+                    document.getElementById("uncommon").innerHTML = snapshot.val()["u" + getRandomInt(15)];
+                }
+            });
+
+            get(child(dbref, "MAXglobal/tasks/rare")).then((snapshot) => {
+                if (snapshot.exists()) {
+                    document.getElementById("rare").innerHTML = snapshot.val()["r" + getRandomInt(15)];
+                }
+            });
+
+            get(child(dbref, "MAXglobal/tasks/epic")).then((snapshot) => {
+                if (snapshot.exists()) {
+                    document.getElementById("epic").innerHTML = snapshot.val()["e" + getRandomInt(15)];
+                }
+            });
+
+            get(child(dbref, "MAXglobal/tasks/legendary")).then((snapshot) => {
+                if (snapshot.exists()) {
+                    document.getElementById("legendary").innerHTML = snapshot.val().l1;
+                }
+            }).catch((error) => {
+                alert("unsuccessful, error " + error);
+            });
+        }
+
+        function updateTask(taskType) {
+            const taskNumber = [firstAtask, secondAtask, thirdAtask].filter(task => task !== "none").length;
+
+            if (taskNumber >= 3) {
+                alert("Ви не можете мати більше трьох квестів (＞﹏＜)");
+                return;
+            }
+
+            const taskToUpdate = taskNumber === 0 ? "first" : taskNumber === 1 ? "second" : "third";
+
+            update(ref(db, "MAXglobal/" + username + "/tasks"), {
+                [taskToUpdate]: taskType,
+            });
+        }
+
+        function checkCookie() {
+            let user = getCookie("username");
+            if (user != "") {
+                return (user)
+            } else {
+                window.location.href = 'http://127.0.0.1:5500/log.html';
+            }
+        }
+
+        function deleteCookie() {
+            document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            checkCookie();
+        }
+
+        function getCookie(cname) {
+            let name = cname + "=";
+            let decodedCookie = decodeURIComponent(document.cookie);
+            let ca = decodedCookie.split(';');
+            for (let i =

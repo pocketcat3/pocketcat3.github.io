@@ -1,0 +1,12 @@
+.menu{
+    margin: auto;
+    flex: 0 0 auto;
+    padding: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+    width: 18em;
+}
+
+.content {
+    flex: 1 0 auto;
+  }

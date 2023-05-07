@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/style.css">
+    <title>MAX</title>
+</head>
+
+<body>
+    <div class="content">
+        <h1 id="username">завантажуємось...</h1>
+        <h1 id="role">учень</h1>
+        <h1 id="myTasksText">Активні квести</h1>
+        <div class="mytasks">
+            <h2 id="firstT"></h2>
+            <button id="firstTbutton">виконав</button>
+            <h2 id="secondT"></h2>
+            <button id="secondTbutton">виконав</button>
+            <h2 id="thirdT"></h2>
+            <button id="thirdTbutton">виконав</button>
+        </div>
+    </div>
+
+    <footer>
+        <div class="menu">
+            <a href="index.html"><img src="files/homeIcon.png" alt=""></a>
+            <a href="myTasks.html"><img src="files/tasksIcon.png" alt=""></a>
+            <a href="addTask.html"><img src="files/addTaskIcon.png" alt=""></a>
+            <a href="myWallet.html"><img src="files/walletIcon.png" alt=""></a>
+            <a href="settings.html"><img src="files/settingsIcon.png" alt=""></a>
+        </div>
+    </footer>
+
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-analytics.js";
+
+        const firebaseConfig = {
+        apiKey: "AIzaSyAdRjm2WAGMTP4dfJlrUvHsoW2Za2Ctbfs",
+        authDomain: "maxgl0bal.firebaseapp.com",
+        databaseURL: "https://maxgl0bal-default-rtdb.firebaseio.com",
+        projectId: "maxgl0bal",
+        storageBucket: "maxgl0bal.appspot.com",
+        messagingSenderId: "402614242195",
+        appId: "1:402614242195:web:bb25e8fd7046ce9018b666",
+        measurementId: "G-HJV50WJNDL"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+
+        import {getDatabase, ref, get, set, child, update, remove}
+        from "https://www.gstatic.com/firebasejs/9.19.1/firebase-database.js";
+
+        const db = getDatabase();
+
+        var mbucks = document.getElementById("mbucks");
+        var role = "";
+        var username = checkCookie();
+        var c1 = "";
+        var c2 = "";
+        var c3 = "";
+        var t1 = "";
+        var t2 = "";
+        var t3 = "";
+        var ct = "";
+        var ut = "";
+        var rt = "";
+        var et = "";
+        var lt = "";
+        var tt = "";
+        var commonR = getRandomInt(15);
+        var getCtaskB = document.getElementById("commonB");
+        var commonT = document.getElementById("common");
+        var uncommonR = getRandomInt(15);
+        var getUtaskB = document.getElementById("uncommonB");
+        var uncommonT = document.getElementById("uncommon");
+        var rareR = getRandomInt(15);
+        var getRtaskB = document.getElementById("rareB");
+        var rareT = document.getElementById("rare");
+        var epicR = getRandomInt(15);
+        var getEtaskB = document.getElementById("epicB");
+        var epicT = document.getElementById("epic");
+        var firstAtask = "none";
+        var secondAtask = "none";
+        var thirdAtask = "none";
+        var firstTbutton = document.getElementById("firstTbutton");
+        var secondTbutton = document.getElementById("secondTbutton");
+        var thirdTbutton = document.getElementById("thirdTbutton");
+
+        var exit = document.getElementById("exit");
+
+        getData();
+        let timerId = setInterval(() => getData(), 1000);
+
+        function getData(){
+            document.getElementById("username").innerHTML = username;
+            const dbref = ref(db);
+
+            get (child(dbref, "MAXglobal/"+ username)).then((snapshot)=>{
+                if(snapshot.exists()){
+                    role = snapshot.val().role;
+                    document.getElementById("role").innerHTML = role;
+                }
+                else{
+                    alert("Нажаль ми не знайшли користувача з таким ім'ям (::>_<::)");
+                    deleteCookie();
+                }
+            })
+            get (child(dbref, "MAXglobal/" + username + "/tasks/first")).then((snapshot)=>{
+                if(snapshot.exists()){
+                    t1 = snapshot.val().first;
+                    if(t1 != 'none'){
+                        document.getElementById("firstT").innerHTML = t1;
+                        firstAtask = t1;
+                    }
+                    if(t1 == 'none' && t2 == 'none' && t3 == 'none'){
+                        document.getElementById("firstT").innerHTML = "У вас поки немає активних квестів";
+                    }
+                }
+            })
+            .catch((error)=>{
+                alert("unsuccessful, error "+error);
+            });
+            get (child(dbref, "MAXglobal/" + username + "/tasks/second/")).then((snapshot)=>{
+                if(snapshot.exists()){
+                    t2 = snapshot.val().second;
+                    if(t2 != 'none'){
+                        document.getElementById("secondT").innerHTML = t2;
+                        secondAtask = t2;
+                    }
+                    if(t1 == 'none' && t2 == 'none' && t3 == 'none'){
+                        document.getElementById("firstT").innerHTML = "У вас поки немає активних квестів";
+                    }
+                }
+            })
+            .catch((error)=>{
+                alert("unsuccessful, error "+error);
+            });
+            get (child(dbref, "MAXglobal/" + username + "/tasks/third/")).then((snapshot)=>{
+                if(snapshot.exists()){
+                    t3 = snapshot.val().third;
+                    if(t3 != 'none'){
+                        document.getElementById("thirdT").innerHTML = t3;
+                        thirdAtask = t3;
+                    }
+                    if(t1 == 'none' && t2 == 'none' && t3 == 'none'){
+                        document.getElementById("firstT").innerHTML = "У вас поки немає активних квестів";
+                    }
+                }
+            })
+            .catch((error)=>{
+                alert("unsuccessful, error "+error);
+            });
+        }
+        
+
+
+        function trasfer(){
+            mbucks = mbucks - sum;
+            update(ref(db, "MAXglobal/"+ username),{
+                mbucks: sum.value,
+            })
+            update(ref(db, "MAXglobal/"+ login.value),{
+                mbucks: sum.value + loginMbucksInt,
+            })
+            .then(()=>{
+                alert("Дані були успішно оновлені! ＜（＾－＾）＞")
+            })
+            .catch((error)=>{
+                alert("unsuccessful, error"+error)
+            });
+        }
+
+        function setCookie(cname,cvalue,exdays) {
+            const d = new Date();
+            d.setTime(d.getTime() + (exdays*24*60*60*1000));
+            let expires = "expires=" + d.toUTCString();
+            document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+        }
+
+        function getCookie(cname) {
+            let name = cname + "=";
+            let decodedCookie = decodeURIComponent(document.cookie);
+            let ca = decodedCookie.split(';');
+            for(let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+
+        function checkCookie() {
+            let user = getCookie("username");
+            if (user != "") {
+                return(user)
+            } else {
+                window.location.href = 'http://127.0.0.1:5500/login.html';
+            }
+        }
+
+
+        function firstTdone() {
+            window.location.href = 'doneFirst.html'
+        }
+
+        function secondTdone() {
+            window.location.href = 'doneSecond.html'
+        }
+
+        function thirdTdone() {
+            window.location.href = 'doneThird.html'
+        }
+
+
+        function deleteCookie() {
+            document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            checkCookie();
+        }
+
+        function getRandomInt(max) {
+            return Math.floor(Math.random() * max);
+        }
+
+        firstTbutton.addEventListener('click', firstTdone);
+        secondTbutton.addEventListener('click', secondTdone);
+        thirdTbutton.addEventListener('click', thirdTdone);
+    </script>
+</body>
+</html> 

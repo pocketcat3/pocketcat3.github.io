@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAX{admin}</title>
+    <style>
+        label{display: inline-block; width: 80px;}
+        input,select{width: 120px;}
+    </style>
+</head>
+<body>
+    <label>нікнейм</label> <input id="Namebox" type="text"> <br><br>
+    <label>пошта</label> <input id="Email" type="text"> <br><br>
+    <label>пароль</label> <input id="Password" type="password"> <br><br>
+    <label>монобакси</label> <input id="Mbucks" type="mbucks"> <br><br>
+    <label>роль</label> <input id="Role" type="role"> <br><br>
+
+    <hr>
+    <button id="Insbtn">СТВОРИТИ</button>
+    <button id="Selbtn">ВИБРАТИ</button>
+    <button id="Updbtn">ОНОВИТИ</button>
+    <button id="Delbtn">ВИДАЛИТИ</button>
+
+
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-analytics.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+      
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+          apiKey: "AIzaSyAdRjm2WAGMTP4dfJlrUvHsoW2Za2Ctbfs",
+          authDomain: "maxgl0bal.firebaseapp.com",
+          databaseURL: "https://maxgl0bal-default-rtdb.firebaseio.com",
+          projectId: "maxgl0bal",
+          storageBucket: "maxgl0bal.appspot.com",
+          messagingSenderId: "402614242195",
+          appId: "1:402614242195:web:bb25e8fd7046ce9018b666",
+          measurementId: "G-HJV50WJNDL"
+        };
+      
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+
+        import {getDatabase, ref, get, set, child, update, remove}
+        from "https://www.gstatic.com/firebasejs/9.19.1/firebase-database.js";
+
+        const db = getDatabase();
+
+        var namebox = document.getElementById("Namebox");
+        var email = document.getElementById("Email");
+        var password = document.getElementById("Password");
+        var mbucks = document.getElementById("Mbucks")
+        var role = document.getElementById("Role")
+
+        var insBtn = document.getElementById("Insbtn");
+        var selBtn = document.getElementById("Selbtn");
+        var updBtn = document.getElementById("Updbtn");
+        var delBtn = document.getElementById("Delbtn");
+
+        function InsertData(){
+            set(ref(db, "MAXglobal/"+ namebox.value),{
+                username: namebox.value,
+                email: email.value,
+                password: password.value,
+                mbucks: mbucks.value,
+                role: role.value,
+            })
+            .then(()=>{
+                alert('Користувач був успішно створений(*＾-＾*)');
+            })
+            .catch((error)=>{
+                alert('unsuccessful, error'+error)
+            });
+        }
+
+        function SelectData(){
+            const dbref = ref(db);
+
+            get (child(dbref, "MAXglobal/"+ namebox.value)).then((snapshot)=>{
+                if(snapshot.exists()){
+                    email.value = snapshot.val().email;
+                    password.value = snapshot.val().password;
+                    mbucks.value = snapshot.val().mbucks;
+                    role.value = snapshot.val().role;
+                }
+                else{
+                    alert("Нажаль ми не знайшли користувача з таким ім'ям (::>_<::)");
+                }
+            })
+            .catch((error)=>{
+                alert("unsuccessful, error "+error);
+            });
+        }
+
+        function UpdateData(){
+            update(ref(db, "MAXglobal/"+ namebox.value),{
+                username: namebox.value,
+                password: password.value,
+                email: email.value,
+                mbucks: mbucks.value,
+                role: role.value,
+            })
+            .then(()=>{
+                alert("Дані були успішно оновлені! ＜（＾－＾）＞")
+            })
+            .catch((error)=>{
+                alert("unsuccessful, error"+error)
+            });
+        }
+
+        function DeleteData(){
+            remove(ref(db, "MAXglobal/"+ namebox.value))
+            .then(()=>{
+                alert("Данні були успішно видалені! （*゜ー゜*）")
+            })
+            .catch((error)=>{
+                alert("unsuccessful, error"+error)
+            });
+        }
+
+        insBtn.addEventListener('click',InsertData);
+        selBtn.addEventListener('click',SelectData);
+        updBtn.addEventListener('click',UpdateData);
+        delBtn.addEventListener('click',DeleteData);
+
+      </script>
+
+</body>
+</html>

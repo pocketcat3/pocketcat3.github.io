@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/style.css">
+    <title>MAX</title>
+    <style>
+        label{display: inline-block; width: 80px;}
+        input,select{width: 120px;}
+    </style>
+</head>
+<body>
+    <div class="h1">
+        <h1>MAX!</h1>
+    </div>
+    
+    <div class="input">
+        <input id="codeI" type="text" placeholder="секретний код"> <br><br>
+        <button id="Selbtn">Ввести</button>
+    </div>
+
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-analytics.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+      
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+          apiKey: "AIzaSyAdRjm2WAGMTP4dfJlrUvHsoW2Za2Ctbfs",
+          authDomain: "maxgl0bal.firebaseapp.com",
+          databaseURL: "https://maxgl0bal-default-rtdb.firebaseio.com",
+          projectId: "maxgl0bal",
+          storageBucket: "maxgl0bal.appspot.com",
+          messagingSenderId: "402614242195",
+          appId: "1:402614242195:web:bb25e8fd7046ce9018b666",
+          measurementId: "G-HJV50WJNDL"
+        };
+      
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+
+        import {getDatabase, ref, get, set, child, update, remove}
+        from "https://www.gstatic.com/firebasejs/9.19.1/firebase-database.js";
+
+        const db = getDatabase();
+
+        var code;
+        var mbucks;
+        var username;
+        var code2;
+        var mbucks2;
+        var username2;
+        var mbucks3;
+        var number;
+        var number2;
+
+        var selBtn = document.getElementById("Selbtn");
+        var codeIns = document.getElementById("codeI");
+        let timerId = setInterval(() => getData(), 100);
+
+
+        function getData(){
+            const dbref = ref(db);
+
+            get (child(dbref, "MAXglobal/verification/"+ codeIns.value)).then((snapshot)=>{
+                if(snapshot.exists()){
+                    code2 = snapshot.val().code;
+                    mbucks2 = snapshot.val().mbucks;
+                    username2 = snapshot.val().username;
+                    number2 = snapshot.val().number;
+                }
+                else{
+                }
+                code = code2;
+                mbucks = mbucks2;
+                username = username2;
+                number = number2;
+            })
+            console.log("number");
+            get (child(dbref, "MAXglobal/"+ username)).then((snapshot)=>{
+                if(snapshot.exists()){
+                    mbucks3 = snapshot.val().mbucks;
+                    console.log(mbucks3);
+                }
+                else{
+                }
+            })
+            .catch((error)=>{
+                alert("unsuccessful, error "+error);
+            });
+        }
+        function sleep(millis) {
+            var t = (new Date()).getTime();
+            var i = 0;
+            while (((new Date()).getTime() - t) < millis) {
+                i++;
+            }
+        }
+
+        function UpdateData(username, mbucks, mbucks3){
+            mbucks = mbucks + mbucks3;
+            update(ref(db, "MAXglobal/"+ username),{
+                mbucks: mbucks,
+            })
+            update(ref(db, "MAXglobal/"+ username),{
+                [number]: "none",
+            })
+            .then(()=>{
+                alert("Готово! o(〃＾▽＾〃)o")
+            })
+            .catch((error)=>{
+                alert("unsuccessful, error"+error)
+            });
+            console.log(number);
+            DeleteData(number);
+            UpdateTask(number);
+        }
+        function UpdateTask(x){
+            update(ref(db, "MAXglobal/"+ username + "/tasks/" + x),{
+                [x]: "none",
+            })
+            .then(()=>{
+                alert("Готово! o(〃＾▽＾〃)o")
+            })
+            .catch((error)=>{
+                alert("unsuccessful, error"+error)
+            });
+        }
+
+        function verification(){
+            getData();
+            if(mbucks == "common"){
+                console.log(mbucks);
+                console.log("0.1");
+                mbucks = 0.1
+                console.log(mbucks);
+                UpdateData(username, mbucks, mbucks3);
+            }
+            if(mbucks == "uncommon"){
+                console.log(mbucks);
+                console.log("0.5");
+                mbucks = 0.5
+                console.log(mbucks);
+                UpdateData(username, mbucks, mbucks3);
+            }
+            if(mbucks == "rare"){
+                console.log(mbucks);
+                console.log("1");
+                mbucks = 1
+                console.log(mbucks);
+                UpdateData(username, mbucks, mbucks3);
+            }
+            if(mbucks == "epic"){
+                console.log(mbucks);
+                console.log("2");
+                mbucks = 2
+                console.log(mbucks);
+                UpdateData(username, mbucks, mbucks3);
+            }
+        }
+        function DeleteData(x){
+            remove(ref(db, "MAXglobal/"+ username + "/tasks/" + x))
+            .then(()=>{
+            })
+            .catch((error)=>{
+                alert("unsuccessful, error"+error)
+            });
+        }
+
+        selBtn.addEventListener('click',verification);
+
+      </script>
+
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAX</title>
+</head>
+<body>
+    <label>нікнейм</label> <input id="username" type="text"> <br><br>
+    <label>пароль</label> <input id="password" type="password"> <br><br>
+    <a href="registration.html"><p>реєстрація</p></a>
+    <button id="enter">увійти</button>
+
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-analytics.js";
+
+        const firebaseConfig = {
+        apiKey: "AIzaSyAdRjm2WAGMTP4dfJlrUvHsoW2Za2Ctbfs",
+        authDomain: "maxgl0bal.firebaseapp.com",
+        databaseURL: "https://maxgl0bal-default-rtdb.firebaseio.com",
+        projectId: "maxgl0bal",
+        storageBucket: "maxgl0bal.appspot.com",
+        messagingSenderId: "402614242195",
+        appId: "1:402614242195:web:bb25e8fd7046ce9018b666",
+        measurementId: "G-HJV50WJNDL"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+
+        import {getDatabase, ref, get, set, child, update, remove}
+        from "https://www.gstatic.com/firebasejs/9.19.1/firebase-database.js";
+
+        const db = getDatabase();
+
+
+        var usernameL = document.getElementById("username");
+        var passwordL = document.getElementById("password");
+        var username = ""
+        var password = ""
+
+        var enter = document.getElementById("enter");
+
+        login();
+        let timerId = setInterval(() => login(), 500);
+
+
+        function login(){
+            const dbref = ref(db);
+
+            get (child(dbref, "MAXglobal/"+ usernameL.value)).then((snapshot)=>{
+                if(snapshot.exists()){
+                    username = snapshot.val().username;
+                    password = snapshot.val().password;
+                }
+            })
+            .catch((error)=>{
+                alert("unsuccessful, error "+error);
+            });
+
+        }
+        function test(){
+            if(password == passwordL.value){
+                setCookie("username", username, 30);
+                window.location.href = 'index.html';
+            }
+            else{alert("Щось не так! (＞︿＜)")}
+        }
+        function setCookie(cname,cvalue,exdays) {
+            const d = new Date();
+            d.setTime(d.getTime() + (exdays*24*60*60*1000));
+            let expires = "expires=" + d.toUTCString();
+            document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+        }
+
+
+        enter.addEventListener('click', test);
+    </script>
+</body>
+</html>

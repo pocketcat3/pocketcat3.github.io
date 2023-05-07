@@ -1,0 +1,179 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap');
+
+
+
+.menu{
+    margin: auto;
+    flex: 0 0 auto;
+    padding: 1rem;
+}
+
+.content {
+    flex: 1 0 auto;
+  }
+
+html,
+body {
+    height: 100%;
+}
+
+body{
+    position:fixed;
+    background-image: url();
+    display: flex;
+    flex-direction: column;
+}
+
+#mbucks{
+    font-family: 'Rubik Mono One', sans-serif;
+    font-size: 54px;
+    color: #48E000;
+    margin-left: 30px;
+    margin-top: -15px;
+}
+
+.preloader {
+/*фиксированное позиционирование*/
+position: fixed;
+/* координаты положения */
+left: 0;
+top: 0;
+right: 0;
+bottom: 0;
+/* фоновый цвет элемента */
+background: #e0e0e0;
+/* размещаем блок над всеми элементами на странице (это значение должно быть больше, чем у любого другого позиционированного элемента на странице) */
+z-index: 1001;
+}
+
+.preloader__row {
+position: relative;
+top: 50%;
+left: 50%;
+width: 70px;
+height: 70px;
+margin-top: -35px;
+margin-left: -35px;
+text-align: center;
+animation: preloader-rotate 2s infinite linear;
+}
+
+.preloader__item {
+position: absolute;
+display: inline-block;
+top: 1;
+background-color: #FFC700;
+border-radius: 100%;
+width: 35px;
+height: 35px;
+animation: preloader-bounce 2s infinite ease-in-out;
+}
+
+.preloader__item2 {
+    position: absolute;
+    display: inline-block;
+    top: 0;
+    background-color: #48E000;
+    border-radius: 100%;
+    width: 35px;
+    height: 35px;
+    animation: preloader-bounce 2s infinite ease-in-out;
+    margin-top: 30px;
+}
+
+.preloader__item:last-child {
+top: auto;
+bottom: 0;
+animation-delay: -1s;
+}
+
+@keyframes preloader-rotate {
+100% {
+    transform: rotate(360deg);
+}
+}
+
+@keyframes preloader-bounce {
+
+0%,
+100% {
+    transform: scale(0);
+}
+
+50% {
+    transform: scale(1);
+}
+}
+
+.loaded_hiding .preloader {
+transition: 0.3s opacity;
+opacity: 0;
+}
+
+.loaded .preloader {
+display: none;
+}
+
+#username{
+    font-family: 'Rubik Mono One', sans-serif;
+    font-size: 20px;
+    margin-top: -7px;
+    margin-left: -5px;
+    color: #FFC700;
+}
+
+#role{
+    font-family: 'Rubik Mono One', sans-serif;
+    font-size: 12px;
+    margin-top: -12px;
+    margin-left: -5px;
+    color: #48E000;
+}
+
+#myWalletText{
+    font-family: 'Rubik Mono One', sans-serif;
+    font-size: 18px;
+    margin-top: 25px;
+    margin-left: 30px;
+    color: #48E000;
+}
+
+#firstC, #secondC, #thirdC{
+    font-size: 22px;
+    font-family: 'Rubik', sans-serif;
+    margin-left: 40px;
+    color: #FFC700;
+}
+
+#myTasksText{
+    font-size: 20px;
+    margin-top: 100px;
+    margin-left: 65px;
+    font-family: 'Rubik Mono One', sans-serif;
+    color: #FFC700;
+}
+
+
+#firstT, #secondT, #thirdT{
+    font-size: 17px;
+    font-family: 'Inter', sans-serif;
+}
+#firstT{
+    margin-top: 100px;
+}
+#secondT{
+    margin-top: 40px;
+}
+#thirdT{
+    margin-top: 40px;
+}
+
+
+.mytasks{
+    margin-top: -90px;
+    margin-left: 20px;
+    background-color: #fff2c4;
+    border-radius: 25px;
+}

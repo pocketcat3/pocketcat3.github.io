@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAX</title>
+    <link rel="stylesheet" href="styles/doneFirst.css">
+</head>
+<body>
+    <h2 id="text">Код підтвердження:</h2>
+    <h1 id="code">...</h1>
+
+
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-analytics.js";
+
+        const firebaseConfig = {
+        apiKey: "AIzaSyAdRjm2WAGMTP4dfJlrUvHsoW2Za2Ctbfs",
+        authDomain: "maxgl0bal.firebaseapp.com",
+        databaseURL: "https://maxgl0bal-default-rtdb.firebaseio.com",
+        projectId: "maxgl0bal",
+        storageBucket: "maxgl0bal.appspot.com",
+        messagingSenderId: "402614242195",
+        appId: "1:402614242195:web:bb25e8fd7046ce9018b666",
+        measurementId: "G-HJV50WJNDL"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+
+        import {getDatabase, ref, get, set, child, update, remove}
+        from "https://www.gstatic.com/firebasejs/9.19.1/firebase-database.js";
+
+        const db = getDatabase();
+
+        var username = checkCookie();
+        var cancel = document.getElementById("cancel");
+
+        var code = getRandomInt(999999);
+        var codeT = document.getElementById("code");
+        var username = checkCookie();
+        var mbucks;
+        var mbucks2 = "0"
+        codeT.innerHTML = code;
+
+
+        getData();
+        InsertData();
+        let timerId = setInterval(() => InsertData(), 1000);
+        let getDataTimerId = setInterval(() => getData(), 1000);
+        
+        function getData(){
+            const dbref = ref(db);
+
+            get (child(dbref, "MAXglobal/" + username + "/tasks/first/")).then((snapshot)=>{
+                if(snapshot.exists()){
+                    var mbucks = snapshot.val().task;
+                    mbucks2 = mbucks;
+                    
+                }
+            })
+            .catch((error)=>{
+                alert("unsuccessful, error "+error);
+            });
+        }
+        
+        function setCookie(cname,cvalue,exdays) {
+            const d = new Date();
+            d.setTime(d.getTime() + (exdays*24*60*60*1000));
+            let expires = "expires=" + d.toUTCString();
+            document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+        }
+
+        function getCookie(cname) {
+            let name = cname + "=";
+            let decodedCookie = decodeURIComponent(document.cookie);
+            let ca = decodedCookie.split(';');
+            for(let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+
+        function getRandomInt(max) {
+            return Math.floor(Math.random() * max);
+        }
+        function InsertData(){
+            set(ref(db, "MAXglobal/verification/"+ code),{
+                code: code,
+                username: username,
+                mbucks: mbucks2,
+                number: "first",
+            })
+            .then(()=>{
+            })
+            .catch((error)=>{
+                alert('unsuccessful, error'+error)
+            });
+        }
+        function mbucksFunction(){
+            set(ref(db, "MAXglobal/verification/"+ code),{
+                
+            })
+            .then(()=>{
+            })
+            .catch((error)=>{
+                alert('unsuccessful, error'+error)
+            });
+        }
+
+        function checkCookie() {
+            let user = getCookie("username");
+            if (user != "") {
+                return(user)
+            } else {
+                window.location.href = 'login.html';
+            }
+        }
+        function deleteCookie() {
+            document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            window.location.href = 'login.html';
+        }
+
+
+    </script>
+</body>
+</html> 

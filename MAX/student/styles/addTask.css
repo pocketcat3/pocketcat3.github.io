@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap');
+
+
+#addTaskText{
+    font-family: 'Rubik Mono One', sans-serif;
+    font-size: 32px;
+    color: #48E000;
+}
+
+#common, #uncommon, #rare, #epic, #legendary{
+    font-size: 17px;
+    font-family: 'Inter', sans-serif;
+    
+}
+#commonB, #uncommonB, #rareB, #epicB, #legendaryB{
+    width: 100%;
+    background-color: #8aff54;
+    border-radius: 15px;
+    border-color: #48E000;
+}
